@@ -11,5 +11,5 @@
 ## Dependencias
 
 * npm i react-router-dom
-* 
-* 
+* npm i -D @types/node
+* npm i @headlessui/react @heroicons/react
