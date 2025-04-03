@@ -1,22 +1,11 @@
 import { UseFormRegister, FieldErrors } from "react-hook-form";
 import ErrorMessage from "../ErrorMessage";
+import { ProjectFormData } from "types";
 
 
 type ProjectFormProps = {
-  register: UseFormRegister<{
-    initialValues: {
-        projectName: string;
-        clientName: string;
-        description: string;
-    };
-  }>
-  errors: FieldErrors<{
-    initialValues: {
-        projectName: string;
-        clientName: string;
-        description: string;
-    };
-  }>
+  register: UseFormRegister<ProjectFormData>
+  errors: FieldErrors<ProjectFormData>
 }
 
 export default function ProjectForm({register, errors} : ProjectFormProps) {
@@ -31,13 +20,13 @@ export default function ProjectForm({register, errors} : ProjectFormProps) {
           className="w-full p-3  border border-gray-200"
           type="text"
           placeholder="Nombre del Proyecto"
-          {...register("initialValues.projectName", {
+          {...register("projectName", {
             required: "El Titulo del Proyecto es obligatorio",
           })}
         />
 
-        {errors.initialValues?.projectName && (
-          <ErrorMessage>{errors.initialValues.projectName.message}</ErrorMessage>
+        {errors.projectName && (
+          <ErrorMessage>{errors.projectName.message}</ErrorMessage>
         )}
       </div>
 
@@ -50,13 +39,13 @@ export default function ProjectForm({register, errors} : ProjectFormProps) {
           className="w-full p-3  border border-gray-200"
           type="text"
           placeholder="Nombre del Cliente"
-          {...register("initialValues.clientName", {
+          {...register("clientName", {
             required: "El Nombre del Cliente es obligatorio",
           })}
         />
 
-        {errors.initialValues?.clientName && (
-          <ErrorMessage>{errors.initialValues.clientName.message}</ErrorMessage>
+        {errors.clientName && (
+          <ErrorMessage>{errors.clientName.message}</ErrorMessage>
         )}
       </div>
 
@@ -68,13 +57,13 @@ export default function ProjectForm({register, errors} : ProjectFormProps) {
           id="description"
           className="w-full p-3  border border-gray-200 min-h-20"
           placeholder="Descripción del Proyecto"
-          {...register("initialValues.description", {
+          {...register("description", {
             required: "Una descripción del proyecto es obligatoria"
           })}
         />
 
-        {errors.initialValues?.description && (
-          <ErrorMessage>{errors.initialValues.description.message}</ErrorMessage>
+        {errors.description && (
+          <ErrorMessage>{errors.description.message}</ErrorMessage>
         )}
       </div>
     </>
