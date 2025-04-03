@@ -15,3 +15,4 @@
 * npm i @headlessui/react @heroicons/react
 * npm i react-hook-form
 * npm i zod
+* npm i axios
