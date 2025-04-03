@@ -16,3 +16,4 @@
 * npm i react-hook-form
 * npm i zod
 * npm i axios
+* npm i react-toastify
