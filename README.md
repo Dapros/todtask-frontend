@@ -17,3 +17,4 @@
 * npm i zod
 * npm i axios
 * npm i react-toastify
+* npm i @tanstack/react-query
