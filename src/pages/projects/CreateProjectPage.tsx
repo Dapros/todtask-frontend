@@ -22,18 +22,26 @@ export default function CreateProjectPage() {
   // mutacion
   const mutation = useMutation({
     mutationFn: createProject,
-    onError: () => {
-
+    onError: (error) => {
+      // console.log('desde onError')
+      // console.log(error.message)
+      toast.error(error.message)
     },
     onSuccess: (data) => {
+      // console.log('desde onSuccess')
       toast.success(data)
       navigate('/')
     }
   })
 
-  const handleForm = async (formData : ProjectFormData) => {
-    //llamando la mutacion
-    await mutation.mutateAsync(formData) // se envia formData con mutateAsync hacia mutation y la mutationFN tomara este para su ejecucion.
+  // const handleForm = async (formData : ProjectFormData) => {
+  //   //llamando la mutacion
+  //   await mutation.mutateAsync(formData) // se envia formData con mutateAsync hacia mutation y la mutationFN tomara este para su ejecucion.
+  // }
+
+  // React Query maneja internamente funciones async por lo que tambien es valido hacer
+  const handleForm = (formData: ProjectFormData) => {
+    mutation.mutate(formData)
   }
 
   return (
