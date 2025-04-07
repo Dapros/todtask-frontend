@@ -57,3 +57,15 @@ export async function updateProject({formData, projectId}: ProjectAPIType){
     } 
   }
 }
+
+
+export async function deleteProject(id: Project['_id']){
+  try {
+    const { data } = await api.delete<string>(`/projects/${id}`) // consulta para eliminar proyecto y espera un mensaje de que el proyecto fue eliminado por eso se usa <string>
+    return data
+  } catch (error) {
+    if(isAxiosError(error) && error.response){
+      throw new Error(error.response.data.error)
+    } 
+  }
+}

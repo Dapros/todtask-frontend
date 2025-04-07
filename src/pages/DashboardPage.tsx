@@ -2,8 +2,9 @@ import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
 import { Link } from "react-router-dom"
-import { useQuery } from '@tanstack/react-query'
-import { getProjects } from "@/api/ProjectAPI"
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { deleteProject, getProjects } from "@/api/ProjectAPI"
+import { toast } from 'react-toastify'
 
 
 export default function DashboardPage() {
@@ -11,6 +12,18 @@ export default function DashboardPage() {
   const { data, isLoading } = useQuery({ // extraemos data, isError, isLoading - lerr mas en la pagina tanstack query/docs
     queryKey: ['projects'],
     queryFn: getProjects, //funcion de la query
+  })
+
+  const queryClient = useQueryClient()
+  const { mutate } = useMutation({
+    mutationFn: deleteProject,
+    onError: (error) => {
+      toast.error(error.message)
+    },
+    onSuccess: (data) => {
+      toast.success(data)
+      queryClient.invalidateQueries({queryKey: ['projects']}) // forzando un nuevo refresh invalidando el query para que haga otra consulta
+    }
   })
 
   if(isLoading) return 'cargando...'
@@ -78,7 +91,7 @@ export default function DashboardPage() {
                           <button 
                             type='button' 
                             className='block px-3 py-1 text-sm leading-6 text-red-500'
-                            onClick={() => {} }
+                            onClick={() => mutate(project._id)}
                           >
                             Eliminar Proyecto
                           </button>
