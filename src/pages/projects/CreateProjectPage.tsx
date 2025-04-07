@@ -17,7 +17,7 @@ export default function CreateProjectPage() {
     description: ""
   }
 
-  const { register, handleSubmit, formState: {errors} } = useForm({defaultValues: {initialValues}})
+  const { register, handleSubmit, formState: {errors} } = useForm({defaultValues: initialValues})
 
   // mutacion
   const mutation = useMutation({
