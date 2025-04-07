@@ -2,7 +2,7 @@ import ProjectForm from "@/components/projects/ProjectForm";
 import { Project, ProjectFormData } from "@/types/index";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateProject } from "@/api/ProjectAPI";
 import { toast } from "react-toastify";
 
@@ -23,12 +23,16 @@ export default function EditProjectForm({data, projectId} : EditProjectFormProps
   
     const { register, handleSubmit, formState: {errors} } = useForm({defaultValues: initialValues})
 
+    const queryClient = useQueryClient() // para poder invalidar los query es decir eliminar los datos previos de informacion cacheada
     const { mutate } = useMutation({
       mutationFn: updateProject,
       onError: (error) => {
         toast.error(error.message)
       },
       onSuccess: (data) => {
+        // se hace en onSuccess ya que aqui ocurren los cambios y es donde se va a desabilitar los datos anteriores y que haga una nueva consulta 
+        queryClient.invalidateQueries({queryKey: ['projects']}) //queremos que haga un nuevo query, y el query que va a ejecutar es 'projects', para que lo elimine/desabilite y cree uno nuevo
+        queryClient.invalidateQueries({queryKey: ['editProject', projectId]}) // tambien desabilita el query de editProject
         toast.success(data) // no olvidar data es lo que trae desde la API, ese mensaje!
         navigate('/')
       }

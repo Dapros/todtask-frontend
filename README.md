@@ -18,3 +18,4 @@
 * npm i axios
 * npm i react-toastify
 * npm i @tanstack/react-query
+* npm i @tanstack/react-query-devtools
