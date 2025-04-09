@@ -1,12 +1,33 @@
 import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form'
+import TaskForm from './TaskForm';
+import { TaskFormData } from '@/types/index';
 
 export default function AddTaskModal() {
 
+  const navigate = useNavigate()
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search) // buscara los parametros de un query string en este caso con la forma ?newTask=true
+  const modalTask = queryParams.get('newTask') // revisa con get, si existe newTask
+  const show = modalTask ? true : false // si existe en esta URL entonces lo va a mostrar sino sera falso
+
+  const initialValues : TaskFormData = {
+    name: '',
+    description: ''
+  }
+
+  const { register, handleSubmit, formState: {errors} } = useForm({defaultValues: initialValues})
+
+  const handleCreateTask = (formData : TaskFormData) => {
+    console.log(formData)
+  }
+
   return (
     <>
-      <Transition appear show={true} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={() => { }}>
+      <Transition appear show={show} as={Fragment}>
+        <Dialog as="div" className="relative z-10" onClose={() => navigate(location.pathname, {replace: true})}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -40,6 +61,22 @@ export default function AddTaskModal() {
                   <p className="text-xl font-bold">Llena el formulario y crea  {''}
                     <span className="text-teal-600">una tarea</span>
                   </p>
+
+                  <form
+                    className='mt-10 space-y-3'
+                    onSubmit={handleSubmit(handleCreateTask)}
+                    noValidate
+                  >
+                    <TaskForm 
+                      register={register}
+                      errors={errors}
+                    />
+                    <input 
+                      type="submit"
+                      className='bg-teal-600 hover:bg-teal-700 w-full p-3 text-white uppercase font-bold cursor-pointer transition-colors'
+                      value='Guardar Tarea'
+                    />
+                  </form>
 
                 </Dialog.Panel>
               </Transition.Child>
