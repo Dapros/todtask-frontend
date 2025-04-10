@@ -12,7 +12,7 @@ export default function ProjectDetailsView() {
   const params = useParams() // extraemos el parametro en este caso sera projectId
   const projectId = params.projectId! // projectId con ! para que no infiera undefined
   const { data, isLoading, isError} = useQuery({ // query
-    queryKey: ['editProject', projectId],
+    queryKey: ['project', projectId],
     queryFn: () => getProjectById(projectId),
     retry: false
   })
